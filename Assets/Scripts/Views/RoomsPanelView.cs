@@ -10,6 +10,9 @@ public class RoomsPanelView : BaseView
     [SerializeField]
     private string playerName = "testplayer";
 
+    [SerializeField]
+    private PlaygroundController playgroundController = null;
+
     public void OnClickCreateRoom() {
         NetworkManager.Instance.RoomSocket.CreateRoom(this.roomID).
             OnSuccess(
@@ -62,11 +65,15 @@ public class RoomsPanelView : BaseView
             OnSuccess(
                 (Dictionary<string, object> response) =>
                 {
-                    List<Dictionary<string, object>> rpcDatas = response["rpcs"] as List<Dictionary<string, object>>;
+                    List<object> rpcDatas = response["rpcs"] as List<object>;
 
-                    string payload = DictionarySerializer.ToJSON(response);
+                    foreach (object rpcData in rpcDatas) {
+                        RPC rpc = RPC.Parse(rpcData as Dictionary<string, object>);
 
-                    Debug.Log(payload);
+                        if (rpc.Equals(RPCName.JoinGame)) {
+                            this.playgroundController.SpawnPlayer(rpc);
+                        }
+                    }
                 }
             ).
             Emit();

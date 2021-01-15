@@ -1,18 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BallController : MonoBehaviour
 {
     [SerializeField]
     private float speed = 0.05f;
 
+    [SerializeField]
+    private Text nameText = null;
+
+    [SerializeField]
+    private bool logPosition = false;
+
     private int direction = -1;
+
+    private RoomSocket socket {
+        get {
+            return NetworkManager.Instance.RoomSocket;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -27,9 +39,17 @@ public class BallController : MonoBehaviour
         } else if (this.direction == 3) {
             this.transform.position += (Vector3.left * this.speed);
         }
+
+        if (this.logPosition) {
+            Debug.LogFormat("{0} - {1} - {2}",this.socket.GetTime(), this.nameText.name, this.transform.position);
+        }
     }
 
     public void SetDirection(int direction) {
         this.direction = direction;
+    }
+
+    public void SetName(string name) {
+        this.nameText.text = name;
     }
 }

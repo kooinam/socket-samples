@@ -28,9 +28,9 @@ public class PlaygroundController : MonoBehaviour
 
         if (rpc != null) {
             if (rpc.Equals(RPCName.JoinGame)) {
-                this.spawnPlayer(rpc);
+                this.SpawnPlayer(rpc);
             } else if (rpc.Equals(RPCName.Move)) {
-                this.move(rpc);
+                this.Move(rpc);
             }
         }
     }
@@ -47,15 +47,16 @@ public class PlaygroundController : MonoBehaviour
         }
     }
 
-    private void spawnPlayer(RPC rpc) {
+    public void SpawnPlayer(RPC rpc) {
         string playerName = rpc.ParamStr("playerName");
 
         this.balls[rpc.ClientID] = ResourcesManager.Instance.Instantiate<BallController>(this.ballPrefab, this.transform);
+        this.balls[rpc.ClientID].SetName(playerName);
 
         Debug.Log(this.rpcLog(rpc, playerName));
     }
 
-    private void move(RPC rpc) {
+    public void Move(RPC rpc) {
         int direction = rpc.ParamInt("direction", -1);
 
         this.balls[rpc.ClientID].SetDirection(direction);
