@@ -1101,8 +1101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59145ff239dd4464a98cee4050670fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomID: test
+  roomID: shushi
   playerName: kooinam
+  playgroundController: {fileID: 1466915134}
 --- !u!1 &2016264638
 GameObject:
   m_ObjectHideFlags: 0
