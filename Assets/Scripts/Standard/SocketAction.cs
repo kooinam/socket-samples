@@ -8,8 +8,8 @@ public class SocketAction
 {
     private BaseSocket socket = null;
     private string actionName = null;
-    private string payload = null;
-    private UnityAction successAction = null;
+    string payload = null;
+    private UnityAction<Dictionary<string, object>> successAction = null;
     private UnityAction<string> errorAction = null;
 
     public SocketAction(BaseSocket socket, string actionName, string payload)
@@ -19,7 +19,7 @@ public class SocketAction
         this.payload = payload;
     }
 
-    public SocketAction OnSuccess(UnityAction successAction)
+    public SocketAction OnSuccess(UnityAction<Dictionary<string, object>> successAction)
     {
         this.successAction = successAction;
 
@@ -46,7 +46,7 @@ public class SocketAction
             if (response["status"].Equals("success")) {
                 if (this.successAction != null)
                 {
-                    this.successAction();
+                    this.successAction(response);
                 }
             }
 

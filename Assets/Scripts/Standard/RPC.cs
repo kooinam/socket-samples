@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class RPCName {
+    public static string JoinGame = "joinGame";
+    public static string Move = "move";
+}
+
 public class RPC
 {
     private string name;
@@ -32,8 +37,8 @@ public class RPC
         }
     }
 
-    private long timestamp;
-    public long Timestamp {
+    private double timestamp;
+    public double Timestamp {
         get {
             return this.timestamp;
         }
@@ -42,18 +47,24 @@ public class RPC
     public static RPC Parse(Dictionary<string, object> response) {
         // LoggerManager.Instance.LogDictionary(response);
 
+        string rpcName = response["rpcName"] as string;
+        string clientID = response["clientId"] as string;
+        Dictionary<string, object> parameters = response["parameters"] as Dictionary<string, object>;
+        double sequenceID = (double)response["sequenceId"];
+        double timestamp =  (double)response["timestamp"];
+
         RPC rpc = new RPC(
-            response["rpcName"] as string,
-            response["clientId"] as string,
-            response["parameters"] as Dictionary<string, object>,
-            (int)response["sequenceId"],
-            (long)response["timestamp"]
+            rpcName,
+            clientID,
+            parameters,
+            (int)sequenceID,
+            timestamp
         );
 
         return rpc;
     }
 
-    public RPC(string name, string clientID, Dictionary<string, object> parameters, int sequenceID, long timestamp) {
+    public RPC(string name, string clientID, Dictionary<string, object> parameters, int sequenceID, double timestamp) {
         this.name = name;
         this.clientID = clientID;
         this.parameters = parameters;
@@ -67,5 +78,23 @@ public class RPC
 
     public bool IsFirstPlayer() {
         return NetworkManager.Instance.RoomSocket.Socket.Id.Equals(this.clientID);
+    }
+
+    public string ParamStr(string key) {
+        if (!this.parameters.ContainsKey(key)) {
+            return null;
+        }
+
+        return this.parameters[key] as string;
+    }
+
+    public int ParamInt(string key, int fallback)
+    {
+        if (!this.parameters.ContainsKey(key))
+        {
+            return fallback;
+        }
+
+        return System.Convert.ToInt32(this.parameters[key]);
     }
 }

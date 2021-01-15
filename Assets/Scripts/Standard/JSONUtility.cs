@@ -138,6 +138,16 @@ public class DictionaryConverter : fsDirectConverter
             d = new fsData((int)v);
         }
 
+        if (v is long)
+        {
+            d = new fsData((long)v);
+        }
+
+        if (v is double)
+        {
+            d = new fsData((double)v);
+        }
+
         if (v is List<Dictionary<string, object>>)
         {
             List<Dictionary<string, object>> dicts = v as List<Dictionary<string, object>>;
@@ -156,6 +166,17 @@ public class DictionaryConverter : fsDirectConverter
             }
 
             d = new fsData(datas);
+        }
+
+        if (v is Dictionary<string, object>) {
+            Dictionary<string, fsData> data = new Dictionary<string, fsData>();
+
+            foreach (string key in (v as Dictionary<string, object>).Keys)
+            {
+                data[key] = this.toFSData((v as Dictionary<string, object>)[key]);
+            }
+
+            d = new fsData(data);
         }
 
         return d;
@@ -222,4 +243,34 @@ public class DictionarySerializer
 
         return fsJsonPrinter.CompressedJson(data);
     }
+}
+
+public class Serializer
+{
+    public static T FromJSON<T>(string payload) where T : new()
+    {
+        fsSerializer serializer = new fsSerializer();
+        serializer.AddConverter(new DateTimeConverter());
+
+        fsData data = fsJsonParser.Parse(payload);
+        T item = new T();
+
+        JSONKey jsonKey = (JSONKey)System.Attribute.GetCustomAttribute(typeof(T), typeof(JSONKey));
+        string key = jsonKey.Single;
+
+        if (data.AsDictionary.ContainsKey(key))
+        {
+            fsData itemData = data.AsDictionary[key];
+
+            serializer.TryDeserialize<T>(itemData, ref item).AssertSuccessWithoutWarnings();
+        }
+
+        return item;
+    }
+}
+
+public class JSONKey : System.Attribute
+{
+    public string Single { get; set; }
+    public string List { get; set; }
 }
