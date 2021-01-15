@@ -40,6 +40,8 @@ public class RoomsPanelView : BaseView
                     NetworkManager.Instance.RoomSocket.Configure(response);
                     NetworkManager.Instance.RoomSocket.SubscribeRPC();
 
+                    this.setup();
+
                     NetworkManager.Instance.RoomSocket.JoinGame(this.playerName).
                         Emit();
                 }
@@ -50,6 +52,21 @@ public class RoomsPanelView : BaseView
                     ErrorPopupView popupView = ResourcesManager.Instance.InstantiateUI<ErrorPopupView>(ResourcesManager.Instance.ErrorPopupPrefab);
 
                     popupView.Setup(errorMessage);
+                }
+            ).
+            Emit();
+    }
+
+    private void setup() {
+        NetworkManager.Instance.RoomSocket.GetRPCs().
+            OnSuccess(
+                (Dictionary<string, object> response) =>
+                {
+                    List<Dictionary<string, object>> rpcDatas = response["rpcs"] as List<Dictionary<string, object>>;
+
+                    string payload = DictionarySerializer.ToJSON(response);
+
+                    Debug.Log(payload);
                 }
             ).
             Emit();

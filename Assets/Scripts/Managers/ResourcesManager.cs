@@ -29,6 +29,13 @@ public class ResourcesManager : Singleton<ResourcesManager>
         return GameObject.Instantiate(prefab, parent);
     }
 
+    public T Instantiate<T>(GameObject prefab, Transform parent)
+    {
+        GameObject go = GameObject.Instantiate(prefab, parent);
+
+        return go.GetComponent<T>();
+    }
+
     public T InstantiateUI<T>(GameObject prefab)
     {
         GameObject go = this.Instantiate(prefab, this.canvasGO.transform);

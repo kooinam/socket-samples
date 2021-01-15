@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlaygroundController : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject ballPrefab = null;
+
+    private Dictionary<string, BallController> balls = null;
+
     private RoomSocket socket {
         get {
             return NetworkManager.Instance.RoomSocket;
@@ -13,7 +18,7 @@ public class PlaygroundController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        this.balls = new Dictionary<string, BallController>();
     }
 
     // Update is called once per frame
@@ -45,11 +50,15 @@ public class PlaygroundController : MonoBehaviour
     private void spawnPlayer(RPC rpc) {
         string playerName = rpc.ParamStr("playerName");
 
+        this.balls[rpc.ClientID] = ResourcesManager.Instance.Instantiate<BallController>(this.ballPrefab, this.transform);
+
         Debug.Log(this.rpcLog(rpc, playerName));
     }
 
     private void move(RPC rpc) {
         int direction = rpc.ParamInt("direction", -1);
+
+        this.balls[rpc.ClientID].SetDirection(direction);
 
         Debug.Log(this.rpcLog(rpc, string.Format("Move {0}", direction)));
     }

@@ -1035,6 +1035,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892bc2d07bde942a4b48b879ec71516b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballPrefab: {fileID: 6128506387933573447, guid: fb2c9e2710b0147c19c21bb0b3a73333,
+    type: 3}
 --- !u!4 &1466915135
 Transform:
   m_ObjectHideFlags: 0
@@ -1100,7 +1102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomID: test
-  playerName: testplayer
+  playerName: kooinam
 --- !u!1 &2016264638
 GameObject:
   m_ObjectHideFlags: 0

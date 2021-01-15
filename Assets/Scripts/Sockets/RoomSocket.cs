@@ -19,13 +19,6 @@ public class RoomSocket : BaseSocket
         }
     }
 
-    private double timestamp = 0;
-    public double Timestamp {
-        get {
-            return this.timestamp;
-        }
-    }
-
     public RoomSocket() : base(NetworkManager.Instance.SocketManager, "rooms") {
         // do nothing
     }
@@ -36,38 +29,6 @@ public class RoomSocket : BaseSocket
         this.hostID = response["hostId"] as string;
         NetworkManager.Instance.RoundTime((double)response["timestamp"]);
         this.timestamp = (double)response["timestamp"] - Time.fixedTime;
-    }
-
-    public long GetTime() {
-        if (this.roomID == null) {
-            return  0;
-        }
-
-        return NetworkManager.Instance.RoundTime(Time.fixedTime + this.timestamp);
-    }
-
-    public RPC PopRPC()
-    {
-        if (this.rpcs.Count == 0)
-        {
-            return null;
-        }
-
-        RPC rpc = this.rpcs[0];
-
-        if (rpc.Timestamp > this.GetTime())
-        {
-            return null;
-        }
-
-        if ((rpc.Timestamp - this.GetTime()) >= 0.05f)
-        {
-            throw new System.Exception(string.Format("RPC out of sync - {0}:{1}", this.GetTime(), rpc.Timestamp));
-        }
-
-        this.rpcs.RemoveAt(0);
-
-        return rpc;
     }
 
     public SocketAction CreateRoom(string roomID)
@@ -86,6 +47,15 @@ public class RoomSocket : BaseSocket
         parameters["roomId"] = roomID;
 
         SocketAction action = this.action("joinRoom", parameters);
+
+        return action;
+    }
+
+    public SocketAction GetRPCs()
+    {
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+
+        SocketAction action = this.action("getRPCs", parameters);
 
         return action;
     }

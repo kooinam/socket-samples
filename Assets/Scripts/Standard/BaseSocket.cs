@@ -22,6 +22,15 @@ public class BaseSocket
         }
     }
 
+    protected double timestamp = 0;
+    public double Timestamp
+    {
+        get
+        {
+            return this.timestamp;
+        }
+    }
+
     protected List<RPC> rpcs = null;
 
     public BaseSocket(SocketManager socketManager, string nsp)
@@ -74,6 +83,35 @@ public class BaseSocket
                 this.rpcs.Add(rpc);
             }
         );
+    }
+
+    public long GetTime()
+    {
+        return NetworkManager.Instance.RoundTime(Time.fixedTime + this.timestamp);
+    }
+
+    public RPC PopRPC()
+    {
+        if (this.rpcs.Count == 0)
+        {
+            return null;
+        }
+
+        RPC rpc = this.rpcs[0];
+
+        if (rpc.Timestamp > this.GetTime())
+        {
+            return null;
+        }
+
+        if ((rpc.Timestamp - this.GetTime()) >= 1)
+        {
+            throw new System.Exception(string.Format("RPC out of sync - {0}:{1}", this.GetTime(), rpc.Timestamp));
+        }
+
+        this.rpcs.RemoveAt(0);
+
+        return rpc;
     }
 
     protected SocketAction action(string actionName, Dictionary<string, object> parameters)
