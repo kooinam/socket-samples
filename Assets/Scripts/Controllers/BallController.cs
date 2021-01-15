@@ -14,6 +14,9 @@ public class BallController : MonoBehaviour
     [SerializeField]
     private bool logPosition = false;
 
+    [SerializeField]
+    private Transform hudTransform = null;
+
     private int direction = -1;
 
     private RoomSocket socket {
@@ -27,17 +30,25 @@ public class BallController : MonoBehaviour
     {
     }
 
+    void Update() {
+        this.hudTransform.rotation = Quaternion.identity;
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
         if (this.direction == 0) {
             this.transform.position += (Vector3.up * this.speed);
+            // this.transform.LookAt(Vector3.up);
         } else if (this.direction == 1) {
             this.transform.position += (Vector3.right * this.speed);
+            // this.transform.LookAt(Vector3.right);
         } else if (this.direction == 2) {
             this.transform.position += (Vector3.down * this.speed);
+            // this.transform.LookAt(Vector3.down);
         } else if (this.direction == 3) {
             this.transform.position += (Vector3.left * this.speed);
+            // this.transform.LookAt(Vector3.left);
         }
 
         if (this.logPosition) {
@@ -49,6 +60,8 @@ public class BallController : MonoBehaviour
 
     public void SetDirection(int direction) {
         this.direction = direction;
+
+        this.transform.eulerAngles = new Vector3(0, 0, this.direction * -90);
     }
 
     public void SetName(string name) {
