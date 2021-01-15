@@ -49,6 +49,13 @@ public class RPC
         }
     }
 
+    private long receivedAt;
+    public long ReceivedAt {
+        get {
+            return this.receivedAt;
+        }
+    }
+
     public static RPC Parse(Dictionary<string, object> response) {
         // LoggerManager.Instance.LogDictionary(response);
 
@@ -75,6 +82,7 @@ public class RPC
         this.parameters = parameters;
         this.sequenceID = sequenceID;
         this.timestamp = timestamp;
+        this.receivedAt = NetworkManager.Instance.RoomSocket.GetTime();
     }
 
     public bool Equals(string name) {

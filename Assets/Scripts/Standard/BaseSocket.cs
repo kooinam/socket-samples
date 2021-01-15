@@ -106,7 +106,7 @@ public class BaseSocket
 
         if ((this.GetTime() - rpc.Timestamp) >= 1)
         {
-            throw new System.Exception(string.Format("RPC out of sync - {0}:{1}", this.GetTime(), rpc.Timestamp));
+            throw new System.Exception(string.Format("RPC out of sync - {0}:{1}:{2}", this.GetTime(), rpc.Timestamp, rpc.ReceivedAt));
         }
 
         this.rpcs.RemoveAt(0);

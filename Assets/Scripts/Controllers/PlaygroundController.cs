@@ -26,7 +26,7 @@ public class PlaygroundController : MonoBehaviour
     {
         RPC rpc = this.socket.PopRPC();
 
-        if (rpc != null) {
+        while (rpc != null) {
             if (rpc.Equals(RPCName.JoinGame)) {
                 this.SpawnPlayer(rpc);
             } else if (rpc.Equals(RPCName.Move)) {
@@ -44,6 +44,8 @@ public class PlaygroundController : MonoBehaviour
                     DictionarySerializer.ToJSON(rpc.Parameters)
                 )
             );
+
+            rpc = this.socket.PopRPC();
         }
     }
 
