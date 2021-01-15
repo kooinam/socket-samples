@@ -32,6 +32,18 @@ public class PlaygroundController : MonoBehaviour
             } else if (rpc.Equals(RPCName.Move)) {
                 this.Move(rpc);
             }
+
+            LoggerManager.Instance.Info(
+                string.Format(
+                    "executedAt: {0}<br />timestamp: {1}<br />clientID: {2}<br/>sequenceID: {3}<br />rpcName: {4}<br />parameters: {5}",
+                    this.socket.GetTime(),
+                    rpc.Timestamp,
+                    rpc.ClientID,
+                    rpc.SequenceID,
+                    rpc.Name,
+                    DictionarySerializer.ToJSON(rpc.Parameters)
+                )
+            );
         }
     }
 
@@ -52,16 +64,12 @@ public class PlaygroundController : MonoBehaviour
 
         this.balls[rpc.ClientID] = ResourcesManager.Instance.Instantiate<BallController>(this.ballPrefab, this.transform);
         this.balls[rpc.ClientID].SetName(playerName);
-
-        Debug.Log(this.rpcLog(rpc, playerName));
     }
 
     public void Move(RPC rpc) {
         int direction = rpc.ParamInt("direction", -1);
 
         this.balls[rpc.ClientID].SetDirection(direction);
-
-        Debug.Log(this.rpcLog(rpc, string.Format("Move {0}", direction)));
     }
 
     private string rpcLog(RPC rpc, object o) {

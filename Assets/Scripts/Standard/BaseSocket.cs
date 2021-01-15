@@ -141,9 +141,6 @@ public class BaseSocket
         {
             Dictionary<string, object> response = args[0] as Dictionary<string, object>;
 
-            string raw = DictionarySerializer.ToJSON(response);
-            LoggerManager.Instance.Info(raw);
-
             onReceived(response);
         };
 
