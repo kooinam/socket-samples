@@ -51,7 +51,7 @@ public class PlaygroundController : MonoBehaviour
     private void move(RPC rpc) {
         int direction = rpc.ParamInt("direction", -1);
 
-        Debug.Log(this.rpcLog(rpc, direction));
+        Debug.Log(this.rpcLog(rpc, string.Format("Move {0}", direction)));
     }
 
     private string rpcLog(RPC rpc, object o) {
