@@ -187,6 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.05
   nameText: {fileID: 7575386183852102571}
+  logPosition: 1
 --- !u!1 &6185447563426892211
 GameObject:
   m_ObjectHideFlags: 0
