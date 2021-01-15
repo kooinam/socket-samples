@@ -41,7 +41,9 @@ public class BallController : MonoBehaviour
         }
 
         if (this.logPosition) {
-            Debug.LogFormat("{0} - {1} - {2}",this.socket.GetTime(), this.nameText.text, this.transform.position);
+            if (this.socket.GetTime() % 100 == 0) {
+                Debug.LogFormat("{0} - {1} - {2}",this.socket.GetTime(), this.nameText.text, this.transform.position);
+            }
         }
     }
 

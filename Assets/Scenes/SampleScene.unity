@@ -1102,7 +1102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomID: shushi
-  playerName: kooinam
+  playerName: test
   playgroundController: {fileID: 1466915134}
 --- !u!1 &2016264638
 GameObject:

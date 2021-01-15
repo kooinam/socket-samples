@@ -43,7 +43,7 @@ public class RPC
 
     // rpc execute timestamp
     private double timestamp;
-    public double Timestamp {
+    public long Timestamp {
         get {
             return NetworkManager.Instance.RoundTime(this.timestamp);
         }
