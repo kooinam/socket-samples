@@ -9,6 +9,7 @@ public class RPCName {
 
 public class RPC
 {
+    // rpc name
     private string name;
     public string Name {
         get {
@@ -16,6 +17,7 @@ public class RPC
         }
     }
 
+    // client who fire this RPC
     private string clientID;
     public string ClientID {
         get {
@@ -23,6 +25,7 @@ public class RPC
         }
     }
 
+    // rpc parameters
     private Dictionary<string, object> parameters;
     public Dictionary<string, object> Parameters {
         get {
@@ -30,6 +33,7 @@ public class RPC
         }
     }
 
+    // rpc offset starting from 0
     private int sequenceID;
     public int SequenceID {
         get {
@@ -37,6 +41,7 @@ public class RPC
         }
     }
 
+    // rpc execute timestamp
     private double timestamp;
     public double Timestamp {
         get {

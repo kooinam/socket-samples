@@ -34,11 +34,15 @@ public class RoomSocket : BaseSocket
     {
         this.roomID = response["roomId"] as string;
         this.hostID = response["hostId"] as string;
-        this.timestamp = (double)response["timestamp"];
+        this.timestamp = (double)response["timestamp"] - Time.time;
     }
 
     public double GetTime() {
-        return Time.time - this.timestamp;
+        if (this.roomID == null) {
+            return  0;
+        }
+
+        return Time.time + this.timestamp;
     }
 
     public SocketAction CreateRoom(string roomID)

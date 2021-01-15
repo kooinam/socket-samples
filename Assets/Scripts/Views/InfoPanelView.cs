@@ -11,6 +11,6 @@ public class InfoPanelView : MonoBehaviour
     void FixedUpdate() {
         RoomSocket roomSocket = NetworkManager.Instance.RoomSocket;
 
-        // this.infoText.text = string.Format("Time: {0}", RoomSocket.time);
+        this.infoText.text = string.Format("Room: {0}\nHost: {1}\nTime: {2}", roomSocket.RoomID, roomSocket.HostID, roomSocket.GetTime());
     }
 }
