@@ -45,49 +45,9 @@ public class NetworkManager : Singleton<NetworkManager>
         this.RoomSocket.Connect();
     }
 
-    // public void Subscribe<M>(BaseView view, SocketEventNames eventName, UnityAction<SocketResponse<M>> successAction, UnityAction<SocketResponse<M>> errorAction, UnityAction startAction) where M : BaseModel {
-    //     if (!this.events.ContainsKey(eventName)) {
-    //         this.events[eventName] = new FabEvent<SocketResponse<M>>();
-    //     }
+    public long RoundTime(double t) {
+        long nearest = (long)Mathf.Round((float)t * 20f);
 
-    //     FabEvent<SocketResponse<M>> fabEvent = this.events[eventName] as FabEvent<SocketResponse<M>>;
-    //     UnityAction<SocketStatus, SocketResponse<M>> action = (SocketStatus status, SocketResponse<M> response) =>
-    //     {
-    //         switch (status)
-    //         {
-    //             case SocketStatus.Success:
-    //                 if (successAction != null)
-    //                 {
-    //                     successAction(response);
-    //                 }
-
-    //                 break;
-    //             case SocketStatus.Error:
-    //                 if (errorAction != null)
-    //                 {
-    //                     errorAction(response);
-    //                 }
-
-    //                 break;
-    //             case SocketStatus.Start:
-    //                 if (startAction != null)
-    //                 {
-    //                     startAction();
-    //                 }
-
-    //                 break;
-    //             default:
-    //                 break;
-    //         }
-    //     };
-
-    //     fabEvent.AddListener(action);
-
-    //     view.DestroyEvent.AddListener(
-    //         () =>
-    //         {
-    //             fabEvent.RemoveListener(action);
-    //         }
-    //     );
-    // }
+        return nearest;
+    }
 }

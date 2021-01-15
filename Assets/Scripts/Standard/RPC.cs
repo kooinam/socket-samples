@@ -45,7 +45,7 @@ public class RPC
     private double timestamp;
     public double Timestamp {
         get {
-            return this.timestamp;
+            return NetworkManager.Instance.RoundTime(this.timestamp);
         }
     }
 

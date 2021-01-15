@@ -55,6 +55,6 @@ public class PlaygroundController : MonoBehaviour
     }
 
     private string rpcLog(RPC rpc, object o) {
-        return string.Format("{0}:{1} - {2}", rpc.Timestamp, this.socket.GetTime(), o);
+        return string.Format("Now[{0}]:ExecuteAt[{1}] - {2}", this.socket.GetTime(), rpc.Timestamp, o);
     }
 }

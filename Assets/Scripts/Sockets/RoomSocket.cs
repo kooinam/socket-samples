@@ -34,15 +34,40 @@ public class RoomSocket : BaseSocket
     {
         this.roomID = response["roomId"] as string;
         this.hostID = response["hostId"] as string;
-        this.timestamp = (double)response["timestamp"] - Time.time;
+        NetworkManager.Instance.RoundTime((double)response["timestamp"]);
+        this.timestamp = (double)response["timestamp"] - Time.fixedTime;
     }
 
-    public double GetTime() {
+    public long GetTime() {
         if (this.roomID == null) {
             return  0;
         }
 
-        return Time.time + this.timestamp;
+        return NetworkManager.Instance.RoundTime(Time.fixedTime + this.timestamp);
+    }
+
+    public RPC PopRPC()
+    {
+        if (this.rpcs.Count == 0)
+        {
+            return null;
+        }
+
+        RPC rpc = this.rpcs[0];
+
+        if (rpc.Timestamp > this.GetTime())
+        {
+            return null;
+        }
+
+        if ((rpc.Timestamp - this.GetTime()) >= 0.05f)
+        {
+            throw new System.Exception(string.Format("RPC out of sync - {0}:{1}", this.GetTime(), rpc.Timestamp));
+        }
+
+        this.rpcs.RemoveAt(0);
+
+        return rpc;
     }
 
     public SocketAction CreateRoom(string roomID)

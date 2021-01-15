@@ -76,17 +76,6 @@ public class BaseSocket
         );
     }
 
-    public RPC PopRPC() {
-        if (this.rpcs.Count == 0) {
-            return null;
-        }
-
-        RPC rpc = this.rpcs[0];
-        this.rpcs.RemoveAt(0);
-
-        return rpc;
-    }
-
     protected SocketAction action(string actionName, Dictionary<string, object> parameters)
     {
         string payload = DictionarySerializer.ToJSON(parameters);
