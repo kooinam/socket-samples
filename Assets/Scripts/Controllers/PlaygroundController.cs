@@ -35,13 +35,14 @@ public class PlaygroundController : MonoBehaviour
 
             LoggerManager.Instance.Info(
                 string.Format(
-                    "executedAt: {0}<br />timestamp: {1}<br />clientID: {2}<br/>sequenceID: {3}<br />rpcName: {4}<br />parameters: {5}",
+                    "receivedAt: {6}<br />executedAt: {0}<br />timestamp: {1}<br />clientID: {2}<br/>sequenceID: {3}<br />rpcName: {4}<br />parameters: {5}",
                     this.socket.GetTime(),
                     rpc.Timestamp,
                     rpc.ClientID,
                     rpc.SequenceID,
                     rpc.Name,
-                    DictionarySerializer.ToJSON(rpc.Parameters)
+                    DictionarySerializer.ToJSON(rpc.Parameters),
+                    rpc.ReceivedAt
                 )
             );
 
